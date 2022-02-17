@@ -1,16 +1,22 @@
 import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 import pokemonReducer from './redux/reducers/pokemonReducers';
 
 import './index.css';
+import { logActions } from './redux/middlewares';
+
+const composedEnhacer = compose(
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  applyMiddleware(logActions)
+);
 
 const store = createStore(
   pokemonReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composedEnhacer
 );
 
 ReactDOM.render(

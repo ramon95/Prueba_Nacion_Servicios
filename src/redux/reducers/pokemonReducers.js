@@ -1,16 +1,21 @@
-import { SET_POKEMONS } from "../actions/type";
+import { CLEAR_ERROR, SET_ERROR, SET_POKEMONS } from "../actions/type";
 
 const initialState = {
     list: [],
+    error: ""
 };
 
 const pokemonReducer = ( state = initialState, action ) => {
     switch (action.type) {
         case SET_POKEMONS:
-            return { ...state, list: action.payload };    
+            return { ...state, list: action.payload };
+        case SET_ERROR:
+            return { ...state, error: action.payload.message };
+        case CLEAR_ERROR:
+            return { ...state, error: "" };
         default:
             return { ...state };
     }
-}
+};
 
 export default pokemonReducer;
