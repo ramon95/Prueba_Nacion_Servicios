@@ -1,35 +1,16 @@
 import React, { useEffect } from "react";
-import { getPokemons, getPokemonsWithDetails } from "../api/pokeApi";
-import { setError, setLoading, setPokemons } from '../redux/actions';
+import { Loading } from "../components/loading";
 import { useDispatch, useSelector } from 'react-redux';
 import { PokemonsList } from "../components/pokemonList";
-import { Loading } from "../components/loading";
+import { getPokemonsWithDetailsAction } from '../redux/actions';
 
 const Home = () => {
     const dispatch = useDispatch();
     const pokemons = useSelector(state => state.list);
     const loading = useSelector(state => state.loading);
 
-    const getPokemonsInfo = () => {
-        dispatch(setLoading());
-        getPokemons()
-        .then((response) => {
-            const pokemonList = response.results;
-            return Promise.all(
-                pokemonList.map((pokemon) => getPokemonsWithDetails(pokemon.url))
-                );
-            })
-        .then((pokemonsResponse) => {
-            dispatch(setPokemons(pokemonsResponse));
-            dispatch(setLoading());
-        })
-        .catch((error) => {
-            dispatch(setError({ message: "Ocurrio un error", error }));
-        });
-    };
-
     useEffect(() => {
-        getPokemonsInfo();
+        dispatch(getPokemonsWithDetailsAction());
     },[]);
 
     return(
