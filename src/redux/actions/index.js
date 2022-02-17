@@ -1,5 +1,18 @@
-import { getPokemons, getPokemonsWithDetailsURL, getPokemonWithDetails } from "../../api/pokeApi";
-import { CLEAR_ERROR, SET_ERROR, SET_LOADING, SET_POKEMONS, SET_POKEMON } from "./type";
+import { 
+  getPokemons,
+  getPokemonsTpyes,
+  getPokemonsWithDetailsURL,
+  getPokemonWithDetails 
+} from "../../api/pokeApi";
+import { 
+  CLEAR_ERROR,
+  SET_ERROR,
+  SET_LOADING,
+  SET_POKEMONS,
+  SET_POKEMON,
+  SET_TYPES, 
+  SET_POKEMONS_FILTER 
+} from "./type";
 
 export const setPokemons = (payload) => ({
     type: SET_POKEMONS,
@@ -26,8 +39,26 @@ export const setLoading = (payload) => ({
   payload,
 });
 
+export const setTypes = (payload) => ({
+  type: SET_TYPES,
+  payload,
+});
+
+export const setPokemonsFilter = (payload) => ({
+  type: SET_POKEMONS_FILTER,
+  payload,
+});
+
 export const getPokemonsWithDetailsAction = () => (dispatch) => {
   dispatch(setLoading());
+  getPokemonsTpyes()
+  .then((response) => {
+    dispatch(setTypes(response.results));
+  })
+  .catch((error) => {
+    dispatch(setError({ message: "Ocurrio un error", error }));
+  });
+
   getPokemons()
   .then((response) => {
     const pokemonList = response.results;
@@ -40,6 +71,7 @@ export const getPokemonsWithDetailsAction = () => (dispatch) => {
   .catch((error) => {
     dispatch(setError({ message: "Ocurrio un error", error }));
   });
+
 };
 
 export const getPokemonWithDetailsAction = (pokemonId) => (dispatch) => {
@@ -52,4 +84,20 @@ export const getPokemonWithDetailsAction = (pokemonId) => (dispatch) => {
   .catch((error) => {
     dispatch(setError({ message: "Ocurrio un error", error }));
   });
+}
+
+export const getPokemonsFilter = (pokemonType, pokemos) => (dispatch) => {
+  const pokemonFilter = [];
+  pokemos.forEach(pokemon => {
+    let band = false;
+    pokemon.types.forEach(type => {
+      if (type.type.name === pokemonType) {
+        band = true;
+      }
+    });
+    if (band) {
+      pokemonFilter.push(pokemon)
+    }
+  });
+  dispatch(setPokemonsFilter(pokemonFilter));
 }
