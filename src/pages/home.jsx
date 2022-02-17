@@ -1,25 +1,22 @@
-import { getPokemons } from "../api/pokeApi";
 import React, { useEffect } from "react";
-import { PokemonCard } from "../components/pokemonCard";
+import { getPokemons } from "../api/pokeApi";
+import { setPokemons } from '../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { PokemonsList } from "../components/pokemonList";
 
 const Home = () => {
+    const dispatch = useDispatch();
+    const pokemons = useSelector(state => state.list);
+
     useEffect(() => {
         getPokemons().then((response) => {
-            console.log(response);
+            dispatch(setPokemons(response.results));
         })
     },[])
 
     return(
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-10 pt-10 gap-y-10">
-            <PokemonCard/>
-            <PokemonCard/>
-            <PokemonCard/>
-            <PokemonCard/>
-            <PokemonCard/>
-            <PokemonCard/>
-            <PokemonCard/>
-            <PokemonCard/>
-            <PokemonCard/>
+        <div className="px-10 py-10">
+            <PokemonsList pokemons={pokemons}/>
         </div>
     );
 };
