@@ -1,8 +1,9 @@
-import { CLEAR_ERROR, SET_ERROR, SET_POKEMONS } from "../actions/type";
+import { CLEAR_ERROR, SET_ERROR, SET_LOADING, SET_POKEMONS } from "../actions/type";
 
 const initialState = {
     list: [],
-    error: ""
+    error: "",
+    loading: false,
 };
 
 const pokemonReducer = ( state = initialState, action ) => {
@@ -13,6 +14,8 @@ const pokemonReducer = ( state = initialState, action ) => {
             return { ...state, error: action.payload.message };
         case CLEAR_ERROR:
             return { ...state, error: "" };
+        case SET_LOADING:
+            return { ...state, loading: !state.loading };
         default:
             return { ...state };
     }
