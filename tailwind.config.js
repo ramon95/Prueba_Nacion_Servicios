@@ -45,7 +45,10 @@ module.exports = {
 				error: '#f40000',
 			},
 			white: '#FFFFFF',
-      link: '#2e56e8'
+      link: '#2e56e8',
+      gray_light: "#f2f2f2",
+      box: "#30a7d7",
+      box_stats: "#a4a4a4"
 		},
     extend: {
 
